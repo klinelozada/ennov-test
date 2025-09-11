@@ -1,0 +1,335 @@
+<section id="awesome-banner-{{ section.id }}" class="awesome-banner">
+  <div class="ab__card">
+    <h2 class="ab__headline">{{ section.settings.header | escape }}</h2>
+
+    {% if section.settings.subtitle != blank %}
+      <p class="ab__subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+
+    <div class="ab__cta">
+      {% if section.settings.btn1_label != blank %}
+        <a class="ab__btn ab__btn--primary" href="{{ section.settings.btn1_url }}">{{ section.settings.btn1_label }}</a>
+      {% endif %}
+
+      {% if section.settings.btn2_label != blank %}
+        <a class="ab__btn ab__btn--paypal" href="{{ section.settings.btn2_url }}">
+          <span>{{ section.settings.btn2_label }}</span>
+          {% if section.settings.paypal_logo != blank %}
+            <img src="{{ section.settings.paypal_logo | image_url: width: 180 }}" alt="PayPal" class="ab__logo" loading="lazy">
+          {% endif %}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="ab__small">
+      {{ section.settings.small_prefix }}
+      {% if section.settings.afterpay_logo != blank %}
+        <img src="{{ section.settings.afterpay_logo | image_url: width: 120 }}" alt="Afterpay" loading="lazy" class="ab__button">
+      {% endif %}
+    </div>
+
+    {% if section.settings.countdown_heading != blank %}
+      <div class="ab__divider"></div>
+      <p class="ab__countdown-heading">{{ section.settings.countdown_heading }}</p>
+    {% endif %}
+
+    <div class="cd-grid" role="timer" aria-live="polite">
+      <div class="cd-box">
+        <div id="cd-days-{{ section.id }}" class="cd-value">0</div>
+        <div class="cd-label">DAYS</div>
+      </div>
+      <div class="cd-box">
+        <div id="cd-hours-{{ section.id }}" class="cd-value">0</div>
+        <div class="cd-label">HOURS</div>
+      </div>
+      <div class="cd-box">
+        <div id="cd-mins-{{ section.id }}" class="cd-value">0</div>
+        <div class="cd-label">MINUTES</div>
+      </div>
+      <div class="cd-box">
+        <div id="cd-secs-{{ section.id }}" class="cd-value">0</div>
+        <div class="cd-label">SECONDS</div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #awesome-banner-{{ section.id }} {
+      padding: 28px 16px;
+      display: flex;
+      justify-content: center;
+      background: transparent;
+    }
+    #awesome-banner-{{ section.id }} .ab__card {
+      width: min(100%, 920px);
+      border-radius: 14px;
+      padding: 28px 22px;
+      background: {{ section.settings.bg_color | color_modify: 'alpha', section.settings.bg_opacity | divided_by: 100.0 }};
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      text-align: center;
+    }
+    .ab__headline {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .ab__subtitle {
+      margin: 0 0 18px;
+      font-size: clamp(16px, 2.1vw, 22px);
+      color: rgba(0,0,0,.8);
+    }
+    .ab__cta {
+      display: grid;
+      gap: 10px;
+      width: min(100%, 520px);
+      margin: 0 auto 10px;
+    }
+    @media (min-width: 580px) {
+      .ab__cta { grid-template-columns: 1fr; }
+    }
+    .ab__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+    .ab__btn--primary {
+      background: #b69a61;
+      color: #fff;
+    }
+    .ab__btn--paypal {
+      background: #ffcc48;
+      color: #1a1a1a;
+    }
+    .ab__logo {
+        height: 22px;
+        width: auto;
+    }
+    .ab__small {
+      margin: 8px 0 18px;
+      color: rgba(0,0,0,.75);
+      font-size: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .ab__small img.ab__button {
+      margin-left:8px;
+      cursor:pointer;
+    }
+    .ab__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,.1);
+      background: #fff;
+      margin-left: 6px;
+    }
+    .ab__badge img { height: 16px; width: auto; }
+    .ab__divider {
+      height: 1px;
+      background: rgba(0,0,0,.08);
+      margin: 16px auto;
+      width: min(100%, 520px);
+    }
+    .ab__countdown-heading {
+      margin: 0 0 10px;
+      font-weight: 600;
+    }
+    .ab__timer {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(70px, 1fr));
+      gap: 10px;
+      width: min(100%, 520px);
+      margin: 0 auto;
+    }
+    .ab__timebox {
+      background: #2d2d2d;
+      color: #fff;
+      padding: 10px 8px;
+      border-radius: 8px;
+    }
+    .ab__timebox span {
+      display: block;
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .ab__timebox small {
+      display: block;
+      font-size: 11px;
+      opacity: .85;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    #awesome-banner-{{ section.id }} .cd-grid{
+        display:grid;
+        grid-template-columns:repeat(4, minmax(80px, 1fr));
+        gap:10px;
+        width:min(100%, 520px);
+        margin:0 auto;
+    }
+    #awesome-banner-{{ section.id }} .cd-box{
+        background:#2f2f2f;
+        color:#fff;
+        border-radius:10px;
+        padding:12px 14px;
+        text-align:center;
+        box-shadow:0 1px 0 rgba(0,0,0,.15) inset;
+    }
+    #awesome-banner-{{ section.id }} .cd-value{
+        font-weight:800;
+        font-size:22px;
+        line-height:1.1;
+    }
+    #awesome-banner-{{ section.id }} .cd-label{
+        margin-top:6px;
+        font-size:11px;
+        letter-spacing:.06em;
+        text-transform:uppercase;
+        opacity:.9;
+    }
+    @media (max-width: 420px){
+        #awesome-banner-{{ section.id }} .cd-grid{
+        grid-template-columns:repeat(4, 1fr);
+        gap:8px;
+        }
+        #awesome-banner-{{ section.id }} .cd-value{ font-size:18px; }
+    }
+  </style>
+
+  <script>
+    (function(){
+      var dateStr = "{{ section.settings.countdown_date | escape }}"; 
+      var target = new Date(dateStr + "T12:00:00");
+      var dEl = document.getElementById("cd-days-{{ section.id }}");
+      var hEl = document.getElementById("cd-hours-{{ section.id }}");
+      var mEl = document.getElementById("cd-mins-{{ section.id }}");
+      var sEl = document.getElementById("cd-secs-{{ section.id }}");
+      function pad2(n){ return (n<10?"0":"") + n; }
+      function tick(){
+        var now = new Date();
+        var diff = target - now;
+        if (isNaN(target.getTime()) || diff <= 0){
+          dEl.textContent = "0";
+          hEl.textContent = "00";
+          mEl.textContent = "00";
+          sEl.textContent = "00";
+          return;
+        }
+        var totalSec = Math.floor(diff/1000);
+        var days  = Math.floor(totalSec/86400); totalSec -= days*86400;
+        var hours = Math.floor(totalSec/3600);  totalSec -= hours*3600;
+        var mins  = Math.floor(totalSec/60);    totalSec -= mins*60;
+        var secs  = totalSec;
+        dEl.textContent = String(days);
+        hEl.textContent = pad2(hours);
+        mEl.textContent = pad2(mins);
+        sEl.textContent = pad2(secs);
+        setTimeout(tick, 250);
+      }
+      tick();
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+    "name": "Countdown Banner",
+    "settings": [
+        {
+            "type": "text",
+            "id": "header",
+            "label": "Header",
+            "default": "AWESOME!"
+        },
+        {
+            "type": "richtext",
+            "id": "subtitle",
+            "label": "Subtitle (supports HTML)",
+            "default": "<p><em>Your discount of $67 off</em> has been automatically applied.</p>"
+        },
+        {
+            "type": "text",
+            "id": "btn1_label",
+            "label": "Button 1 label",
+            "default": "Order Now"
+        },
+        {
+            "type": "url", 
+            "id": "btn1_url",
+            "label": "Button 1 link"
+        },
+        {
+            "type": "text",
+            "id": "btn2_label", 
+            "label": "Button 2 label",
+            "default": "Pay with"
+        },
+        {
+            "type": "url", 
+            "id": "btn2_url",
+            "label": "Button 2 link"
+        },
+        {
+            "type": "image_picker",
+            "id": "paypal_logo",
+            "label": "PayPal logo"
+        },
+        {
+            "type": "richtext", 
+            "id": "small_prefix",
+            "label": "Small subtitle (prefix)",
+            "default": "<p>or 4 interest-free payments of $57.60 with</p>"
+        },
+        { 
+            "type": "image_picker",
+            "id": "afterpay_logo",
+            "label": "Afterpay logo"
+        },
+        {
+            "type": "text",
+            "id": "countdown_heading",
+            "label": "Countdown heading",
+            "default": "Valentine’s Day Sale Ends at 12PM Feb 14th 2025"
+        },
+        {
+            "type": "text",
+            "id": "countdown_date",
+            "label": "Countdown target date",
+            "default": "2025-01-25",
+            "info": "Enter date in YYYY-MM-DD format"
+        },
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Card background color",
+            "default": "#ffffff"
+        },
+        {
+            "type": "range",
+            "id": "bg_opacity",
+            "label": "Card background opacity",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 40
+        }
+    ],
+    "presets": [
+        {
+            "name": "Countdown Banner"
+        }
+    ]
+}
+{% endschema %}

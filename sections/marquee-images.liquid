@@ -1,0 +1,106 @@
+<section id="mq-{{ section.id }}" class="mq">
+  <div class="mq__viewport {% if section.settings.layout == 'full' %}mq--full{% else %}mq--boxed{% endif %}">
+    <div class="mq__track">
+      {% for block in section.blocks %}
+        {% if block.settings.image %}
+          <div class="mq__item" {{ block.shopify_attributes }}>
+            <img src="{{ block.settings.image | image_url: width: 150, height: 150, crop: "center" }}" alt="" loading="lazy">
+          </div>
+        {% endif %}
+      {% endfor %}
+      {% for block in section.blocks %}
+        {% if block.settings.image %}
+          <div class="mq__item">
+            <img src="{{ block.settings.image | image_url: width: 150, height: 150, crop: "center" }}" alt="" loading="lazy">
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <style>
+    #mq-{{ section.id }} {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    /* Boxed layout */
+    #mq-{{ section.id }} .mq__viewport.mq--boxed {
+      overflow: hidden;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Full width layout */
+    #mq-{{ section.id }} .mq__viewport.mq--full {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    #mq-{{ section.id }} .mq__track {
+      display: flex;
+      gap: {{ section.settings.gap }}px;
+      align-items: center;
+      animation: mq-scroll-{{ section.id }} linear infinite;
+    }
+
+    #mq-{{ section.id }} .mq__item img {
+      width: 150px;
+      height: 150px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    @keyframes mq-scroll-{{ section.id }} {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+  </style>
+
+  <script>
+    (function(){
+      var root = document.getElementById('mq-{{ section.id }}');
+      if(!root) return;
+      var track = root.querySelector('.mq__track');
+      if(!track) return;
+
+      var items = track.querySelectorAll('.mq__item').length;
+      var duration = Math.max(20, items * 3);
+      track.style.animationDuration = duration + "s";
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Marquee Images",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout width",
+      "default": "boxed",
+      "options": [
+        { "value": "boxed", "label": "Boxed (max 1400px)" },
+        { "value": "full", "label": "Full width" }
+      ]
+    },
+    { "type": "range", "id": "gap", "label": "Gap between images (px)", "min": 4, "max": 40, "step": 2, "default": 16 }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 10,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Upload image" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Marquee (up to 10 images)" }
+  ]
+}
+{% endschema %}

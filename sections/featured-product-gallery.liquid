@@ -1,0 +1,517 @@
+<section id="fpg-{{ section.id }}" class="fpg">
+  <div class="fpg__wrap">
+    <div class="fpg__left">
+      <h3 class="fpg__title">
+        {{ section.settings.heading }}
+        {% if section.settings.inline_logo %}
+          <img class="fpg__logo" src="{{ section.settings.inline_logo | image_url: width: 140 }}" alt="" loading="lazy">
+        {% endif %}
+      </h3>
+
+      {% if section.settings.body_richtext != blank %}
+        <div class="fpg__body rte">{{ section.settings.body_richtext }}</div>
+      {% endif %}
+
+      {% if section.settings.bullets != blank %}
+        {% assign lines = section.settings.bullets | newline_to_br | split: '<br />' %}
+        <ul class="fpg__bullets">
+          {% for line in lines %}
+            {% assign item = line | strip %}
+            {% if item != '' %}
+              <li>{{ item }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <div class="fpg__right">
+      {% assign prod = section.settings.product %}
+      {% if prod != blank %}
+        <div class="fpg__media fpg__media--swiper">
+          <!-- Main slider -->
+          <div class="fpg__main-swiper swiper">
+            <div class="swiper-wrapper">
+              {% for media in prod.media %}
+                {% if media.media_type == 'image' %}
+                  <div class="swiper-slide">
+                    <img
+                      src="{{ media.preview_image | image_url: width: 800 }}"
+                      alt="{{ media.alt | default: prod.title | escape }}"
+                      loading="eager">
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="swiper-button-prev fpg__nav"></div>
+            <div class="swiper-button-next fpg__nav"></div>
+          </div>
+
+          <!-- Thumbnails -->
+          <div class="fpg__thumbs-swiper swiper">
+            <div class="swiper-wrapper">
+              {% for media in prod.media %}
+                {% if media.media_type == 'image' %}
+                  <div class="swiper-slide">
+                    <img
+                      src="{{ media.preview_image | image_url: width: 120 }}"
+                      alt="{{ media.alt | default: prod.title | escape }}">
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="fpg__placeholder">Select a product to populate the gallery.</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Buy Now + Fulfillment Section (NEW ADDITION) -->
+  {% if section.settings.show_buy_now %}
+    <div class="fpg__wrap fpg__buynow-section">
+      <div class="fpg__buynow-left">
+        {% if section.settings.buy_now_header != blank %}
+          <div class="fpg__buynow-header rte">{{ section.settings.buy_now_header }}</div>
+        {% endif %}
+
+        {% assign prod = section.settings.product %}
+        {% if prod != blank %}
+          <div class="fpg__pricing">
+            {% if prod.compare_at_price > prod.price %}
+              <div class="fpg__original-price">${{ prod.compare_at_price | money_without_currency }}</div>
+            {% endif %}
+            <div class="fpg__final-price">${{ prod.price | money_without_currency }}</div>
+          </div>
+
+          <button class="fpg__order-btn" onclick="addToCartAndCheckout('{{ prod.variants.first.id }}')">
+            Order Now
+          </button>
+        {% endif %}
+      </div>
+
+      <div class="fpg__buynow-right">
+        {% if section.blocks.size > 0 %}
+          <div class="fpg__fulfillment-grid">
+            {% for block in section.blocks %}
+              {% if block.type == 'fulfillment_info' %}
+                <div class="fpg__fulfillment-item" {{ block.shopify_attributes }}>
+                  {% if block.settings.fulfillment_icon != blank %}
+                    <img class="fpg__fulfillment-icon" src="{{ block.settings.fulfillment_icon | image_url: width: 68 }}" alt="">
+                  {% endif %}
+                  {% if block.settings.fulfillment_text != blank %}
+                    <div class="fpg__fulfillment-text rte">{{ block.settings.fulfillment_text }}</div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <style>
+    /* container + grid */
+    #fpg-{{ section.id }}{
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+      flex-direction: column;
+    }
+    
+    #fpg-{{ section.id }} .fpg__wrap{
+      display: grid;
+      grid-template-columns: 40% 60%;
+      gap: 32px;
+      align-items: start;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* left */
+    #fpg-{{ section.id }} .fpg__title{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 24px;
+      font-weight: 800;
+      font-size: clamp(24px, 3.2vw, 40px);
+      justify-content: space-between;
+      color:#DAA555;
+    }
+    
+    #fpg-{{ section.id }} .fpg__logo{
+      height: 142px;
+      width: auto;
+    }
+    
+    #fpg-{{ section.id }} .fpg__body{
+      color: rgba(0,0,0,.8);
+      margin-bottom: 16px;
+      font-size:17px;
+    }
+    
+    #fpg-{{ section.id }} .fpg__bullets{
+      list-style: none;
+      margin: 36px 0 0 0;
+      display: grid;
+      gap: 14px;
+      padding-inline-start:0;
+    }
+
+    #fpg-{{ section.id }} .fpg__bullets li::before{
+      content: "✓";
+      color: #B87664;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    #fpg-{{ section.id }} .fpg__bullets li{
+      font-size:17px;
+      line-height:30px;
+      font-weight:400;
+    }
+
+    /* right: main + thumbs */
+    #fpg-{{ section.id }} .fpg__media{
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 100px;
+      gap: 16px;
+      align-items: start;
+    }
+    
+    #fpg-{{ section.id }} .fpg__main-swiper{
+      background: #f7f7f7;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      max-height: 620px;
+    }
+    
+    #fpg-{{ section.id }} .fpg__main-swiper .swiper-slide{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #fpg-{{ section.id }} .fpg__main-swiper .swiper-slide img{
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    #fpg-{{ section.id }} .fpg__thumbs-swiper{
+      height: 680px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    #fpg-{{ section.id }} .fpg__thumbs-swiper .swiper-slide{
+      opacity: 0.6;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    #fpg-{{ section.id }} .fpg__thumbs-swiper .swiper-slide-thumb-active{
+      opacity: 1;
+      border-width: 0;
+      border-color: transparent;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    #fpg-{{ section.id }} .fpg__thumbs-swiper .swiper-slide img{
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* arrows */
+    #fpg-{{ section.id }} .fpg__nav{
+      top: 16px;
+      width: 44px;
+      height: 44px;
+      margin: 0;
+      z-index: 10;
+      color: #C19B61;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      transform: none;
+      display:flex;
+    }
+    
+    #fpg-{{ section.id }} .swiper-button-prev.fpg__nav{
+      left: 16px;
+    }
+    
+    #fpg-{{ section.id }} .swiper-button-next.fpg__nav{
+      left: 70px;
+    }
+    
+    #fpg-{{ section.id }} .fpg__nav::after{
+      font-size: 24px;
+      font-weight:600;
+    }
+
+    /* NEW: Buy Now Section Styles */
+    #fpg-{{ section.id }} .fpg__buynow-left{
+      text-align:center;
+    }
+
+    #fpg-{{ section.id }} .fpg__buynow-section{
+      margin-top: 40px;
+    }
+
+    #fpg-{{ section.id }} .fpg__buynow-header{
+      margin-bottom: 16px;
+      font-size: 16px;
+      color: #666;
+    }
+
+    #fpg-{{ section.id }} .fpg__pricing{
+      margin-bottom: 20px;
+    }
+
+    #fpg-{{ section.id }} .fpg__original-price{
+      font-size: 18px;
+      color: #C0C0C0;
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+
+    #fpg-{{ section.id }} .fpg__final-price{
+      font-size: 30px;
+      color: #C19B61;
+      font-weight: bold;
+    }
+
+    #fpg-{{ section.id }} .fpg__order-btn{
+      background: #C19B61;
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    #fpg-{{ section.id }} .fpg__order-btn:hover{
+      background: #A67E4A;
+      transform: translateY(-2px);
+    }
+
+    #fpg-{{ section.id }} .fpg__fulfillment-grid{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, auto);
+      gap: 16px;
+      grid-auto-flow: column;
+      align-items: start;
+    }
+
+    #fpg-{{ section.id }} .fpg__fulfillment-item{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #fpg-{{ section.id }} .fpg__fulfillment-icon{
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    #fpg-{{ section.id }} .fpg__fulfillment-text{
+      font-size: 14px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    /* mobile */
+    @media(max-width: 900px){
+      #fpg-{{ section.id }} .fpg__wrap{
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      
+      #fpg-{{ section.id }} .fpg__media{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 80px;
+        gap: 12px;
+      }
+      
+      #fpg-{{ section.id }} .fpg__thumbs-swiper{
+        height: 80px;
+      }
+
+      #fpg-{{ section.id }} .fpg__buynow-section{
+        text-align: center;
+      }
+
+      #fpg-{{ section.id }} .fpg__fulfillment-grid{
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      #fpg-{{ section.id }} .fpg__fulfillment-item{
+        justify-content: center;
+      }
+    }
+    
+    @media(max-width: 640px){
+      #fpg-{{ section.id }}{
+        padding: 24px 16px;
+      }
+    }
+  </style>
+
+  <!-- Swiper assets -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var root = document.getElementById('fpg-{{ section.id }}');
+      if (!root) return;
+      
+      var thumbsEl = root.querySelector('.fpg__thumbs-swiper');
+      var mainEl = root.querySelector('.fpg__main-swiper');
+      
+      if (!thumbsEl || !mainEl) return;
+      
+      // Check if there are images
+      var thumbsWrapper = thumbsEl.querySelector('.swiper-wrapper');
+      var mainWrapper = mainEl.querySelector('.swiper-wrapper');
+      
+      if (!thumbsWrapper || !mainWrapper || !thumbsWrapper.children.length || !mainWrapper.children.length) return;
+
+      // Initialize thumbnails swiper
+      var thumbsSwiper = new Swiper(thumbsEl, {
+        direction: 'vertical',
+        slidesPerView: 8,
+        spaceBetween: 8,
+        freeMode: true,
+        watchSlidesProgress: true,
+        mousewheel: true,
+        breakpoints: {
+          0: { 
+            direction: 'horizontal', 
+            slidesPerView: 'auto', 
+            spaceBetween: 8 
+          },
+          900: { 
+            direction: 'vertical', 
+            slidesPerView: 8, 
+            spaceBetween: 8 
+          }
+        }
+      });
+
+      // Initialize main swiper
+      var mainSwiper = new Swiper(mainEl, {
+        spaceBetween: 0,
+        navigation: {
+          nextEl: root.querySelector('.swiper-button-next.fpg__nav'),
+          prevEl: root.querySelector('.swiper-button-prev.fpg__nav')
+        },
+        thumbs: { 
+          swiper: thumbsSwiper 
+        }
+      });
+    });
+
+    // Add to cart and checkout function
+    function addToCartAndCheckout(variantId) {
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: [{
+            id: variantId,
+            quantity: 1
+          }]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.items) {
+          window.location.href = '/checkout';
+        } else {
+          alert('Error adding item to cart. Please try again.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding item to cart. Please try again.');
+      });
+    }
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Product Gallery",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Header", "default": "SRI DRYQ" },
+    { "type": "image_picker", "id": "inline_logo", "label": "Inline logo" },
+    { "type": "richtext", "id": "body_richtext", "label": "Body", "default": "<p>Say goodbye to frizz with the advanced SRI DryQ.</p>" },
+    { "type": "textarea", "id": "bullets", "label": "Bullets (one per line)", "default": "Intelligent heat control dries hair faster with optimal airflow speeds.\nNegative ions to support frizz-free styling\nInfrared light therapy strengthens weak, brittle hair and stimulates growth.\nFeatures 4 modes, 3 speed settings, and a memory function.\nLightweight, compact, and quiet, making it easy to take anywhere\nEasy-snap magnetic attachments" },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "header", "content": "Buy Now Section" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now Section", "default": true },
+    { "type": "richtext", "id": "buy_now_header", "label": "Buy Now Header", "default": "<p>Limited Time <strong>VALENTINE'S DAY</strong> sale</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "fulfillment_info",
+      "name": "Fulfillment Info",
+      "settings": [
+        { "type": "image_picker", "id": "fulfillment_icon", "label": "Icon/Logo" },
+        { "type": "richtext", "id": "fulfillment_text", "label": "Info Text", "default": "<p>Fulfilled by Amazon</p>" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    { 
+      "name": "Featured Product Gallery",
+      "blocks": [
+        {
+          "type": "fulfillment_info",
+          "settings": {
+            "fulfillment_text": "<p>Fulfilled by Amazon</p>"
+          }
+        },
+        {
+          "type": "fulfillment_info", 
+          "settings": {
+            "fulfillment_text": "<p>Free Shipping</p>"
+          }
+        },
+        {
+          "type": "fulfillment_info",
+          "settings": {
+            "fulfillment_text": "<p>Secure Checkout</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

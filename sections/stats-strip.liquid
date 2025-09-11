@@ -1,0 +1,155 @@
+<section id="sf-{{ section.id }}" class="sf">
+  <div class="sf__wrap">
+    {% for block in section.blocks %}
+      {% assign w = block.settings.width_pct %}
+      <div class="sf__item" style="width: {{ w }}%;">
+        <div class="sf__content"
+             style="color: {{ block.settings.color }};
+                    font-size: {{ block.settings.font_size }}px;
+                    text-align: {{ block.settings.align }};
+                    justify-content:{% if block.settings.align == 'left' %}flex-start{% elsif block.settings.align == 'right' %}flex-end{% else %}center{% endif %};">
+          <div class="rte">{{ block.settings.text }}</div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <style>
+    #sf-{{ section.id }}{
+      display:flex; justify-content:center; padding: 8px 12px;
+    }
+    #sf-{{ section.id }} .sf__wrap{
+      max-width: {{ section.settings.max_width }}px;
+      width:100%;
+      margin:0 auto;
+      border: {{ section.settings.border_size }}px solid {{ section.settings.border_color }};
+      border-radius: {{ section.settings.border_radius }}px;
+      padding: {{ section.settings.padding }}px;
+      display:flex;
+      gap: {{ section.settings.gap }}px;
+      align-items:center;
+      flex-wrap: wrap; /* if too tight on mobile, items can wrap */
+      background: {{ section.settings.background }};
+    }
+    #sf-{{ section.id }} .sf__item{display:flex}
+    #sf-{{ section.id }} .sf__content{
+      width:100%;
+      line-height:1.15;
+      display:flex; align-items:center;
+    }
+    /* Clean up richtext default margins so inline composition doesn't break */
+    #sf-{{ section.id }} .rte p{margin:0}
+    #sf-{{ section.id }} .rte strong{font-weight:800}
+
+    /* Optional: responsive easing so long lines don't overflow on tiny screens */
+    @media (max-width: 480px){
+      #sf-{{ section.id }} .sf__content{ font-size: clamp(14px, 5vw, 24px); }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Stats Strip",
+  "settings": [
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Max width",
+      "default": "740",
+      "options": [
+        { "value": "600", "label": "600 px" },
+        { "value": "680", "label": "680 px" },
+        { "value": "740", "label": "740 px" },
+        { "value": "900", "label": "900 px" },
+        { "value": "1200", "label": "1200 px" },
+        { "value": "1400", "label": "1400 px" }
+      ]
+    },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#BEBEBE" },
+    { "type": "range", "id": "border_size", "label": "Border size (px)", "min": 0, "max": 8, "default": 1 },
+    { "type": "range", "id": "border_radius", "label": "Border radius (px)", "min": 0, "max": 24, "default": 4 },
+    { "type": "range", "id": "padding", "label": "Inner padding (px)", "min": 4, "max": 40, "default": 12 },
+    { "type": "range", "id": "gap", "label": "Gap between blocks (px)", "min": 0, "max": 40, "default": 16 },
+    { "type": "color", "id": "background", "label": "Background color", "default": "#000000" }
+  ],
+  "blocks": [
+    {
+      "type": "chunk",
+      "name": "Text chunk",
+      "settings": [
+        {
+          "type": "select",
+          "id": "width_pct",
+          "label": "Width (%)",
+          "default": "20",
+          "options": [
+            { "value": "10",  "label": "10%"  },
+            { "value": "15",  "label": "15%"  },
+            { "value": "20",  "label": "20%"  },
+            { "value": "25",  "label": "25%"  },
+            { "value": "30",  "label": "30%"  },
+            { "value": "35",  "label": "35%"  },
+            { "value": "40",  "label": "40%"  },
+            { "value": "45",  "label": "45%"  },
+            { "value": "50",  "label": "50%"  },
+            { "value": "55",  "label": "55%"  },
+            { "value": "60",  "label": "60%"  },
+            { "value": "65",  "label": "65%"  },
+            { "value": "70",  "label": "70%"  },
+            { "value": "75",  "label": "75%"  },
+            { "value": "80",  "label": "80%"  },
+            { "value": "85",  "label": "85%"  },
+            { "value": "90",  "label": "90%"  },
+            { "value": "95",  "label": "95%"  },
+            { "value": "100", "label": "100%" }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text (supports HTML)",
+          "default": "<p>Sample</p>"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "Font size (px)",
+          "min": 16,
+          "max": 80,
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Text color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Text alignment",
+          "default": "center",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stats Strip",
+      "blocks": [
+        { "type": "chunk", "settings": { "width_pct": "10",  "text": "<p>Over</p>", "font_size": 16, "color": "#FFFFFF", "align": "center" } },
+        { "type": "chunk", "settings": { "width_pct": "15",  "text": "<p>90%</p>", "font_size": 36, "color": "#C19B61", "align": "center" } },
+        { "type": "chunk", "settings": { "width_pct": "50",  "text": "<p>of consumers saw their dry time cut by</p>", "font_size": 16, "color": "#888888", "align": "center" } },
+        { "type": "chunk", "settings": { "width_pct": "15",  "text": "<p>25%</p>", "font_size": 36, "color": "#C19B61", "align": "center" } },
+        { "type": "chunk", "settings": { "width_pct": "10",  "text": "<p>or more!</p>", "font_size": 16, "color": "#888888", "align": "center" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
