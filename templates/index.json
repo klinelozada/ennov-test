@@ -457,6 +457,63 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "multirow_overlay_gmAAek": {
+      "type": "multirow-overlay",
+      "blocks": {
+        "row_TM4hrA": {
+          "type": "row",
+          "settings": {
+            "caption": "Your caption",
+            "heading": "Your heading",
+            "text": "<p>Add descriptive text here.</p>",
+            "button_label": "Learn more",
+            "button_link": ""
+          }
+        },
+        "row_fhp8wV": {
+          "type": "row",
+          "settings": {
+            "caption": "Your caption",
+            "heading": "Your heading",
+            "text": "<p>Add descriptive text here.</p>",
+            "button_label": "Learn more",
+            "button_link": ""
+          }
+        },
+        "row_Qw3gaM": {
+          "type": "row",
+          "settings": {
+            "caption": "Your caption",
+            "heading": "Your heading",
+            "text": "<p>Add descriptive text here.</p>",
+            "button_label": "Learn more",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "row_TM4hrA",
+        "row_fhp8wV",
+        "row_Qw3gaM"
+      ],
+      "name": "Multirow (Overlay)",
+      "settings": {
+        "image_height": "medium",
+        "desktop_image_width": "medium",
+        "image_layout": "alternate-left",
+        "overlay_vertical": "bottom",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "",
+        "row_color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -468,6 +525,7 @@
     "stats_strip_6y6mXR",
     "featured_collection",
     "featured_product_dztfNw",
-    "multirow_3ckRwr"
+    "multirow_3ckRwr",
+    "multirow_overlay_gmAAek"
   ]
 }
