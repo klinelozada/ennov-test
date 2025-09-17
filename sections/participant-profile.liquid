@@ -1,0 +1,30 @@
+{% comment %}
+Renders a Participant metaobject entry.
+Available fields on `metaobject`: name, photo, bio, role, email, social_links, etc.
+{% endcomment %}
+
+<section class="page-width">
+  <div class="grid grid--2-col">
+    <div>
+      {% if metaobject.photo %}
+        <img src="{{ metaobject.photo | image_url: width: 800 }}" alt="{{ metaobject.name | escape }}">
+      {% endif %}
+    </div>
+    <div>
+      <h1 class="h1">{{ metaobject.name }}</h1>
+      {% if metaobject.role %}<p class="subtitle">{{ metaobject.role }}</p>{% endif %}
+      {% if metaobject.bio %}{{ metaobject.bio }}{% endif %}
+      {% if metaobject.email %}
+        <p><a href="mailto:{{ metaobject.email }}">{{ metaobject.email }}</a></p>
+      {% endif %}
+
+      {% if metaobject.social_links and metaobject.social_links.size > 0 %}
+        <ul>
+          {% for url in metaobject.social_links %}
+            <li><a href="{{ url }}" rel="noopener" target="_blank">{{ url }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+</section>
