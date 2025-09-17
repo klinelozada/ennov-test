@@ -8,6 +8,17 @@
  * ------------------------------------------------------------
  */
 {
-  "sections": {},
-  "order": []
+  "sections": {
+    "participant_profile_8MnUi3": {
+      "type": "participant-profile",
+      "name": "Participant Profile",
+      "settings": {
+        "heading_color": "#111111",
+        "text_color": "#333333"
+      }
+    }
+  },
+  "order": [
+    "participant_profile_8MnUi3"
+  ]
 }
