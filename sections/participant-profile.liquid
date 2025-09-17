@@ -1,178 +1,86 @@
 {% comment %}
-Participant Profile — metaobject-only, block-based layout
+Renders a Participant metaobject entry.
 
-Works only when:
-- current template is a metaobject template AND
-- the metaobject type is "participant"
+Your metaobject fields:
+- company_name            (text)
+- company_about           (rich text / long text)
+- company_description     (rich text / long text)
+- profile_description     (rich text / long text)
+- profile_document        (file)
+- company_contact         (text or rich text)
 
-Fields expected on `metaobject`:
-- company_name (text)
-- company_about (rich text)
-- company_description (rich text)
-- profile_description (rich text)
-- profile_document (file)
-- company_contact (rich text / text)
+The current entry is available as `metaobject`.
 {% endcomment %}
-
-{% if template.name contains 'metaobject' and metaobject and metaobject.type == 'participant' %}
 
 <section class="page-width" id="participant-profile">
   <header class="section-header">
-    <h1 class="h1" style="color: {{ section.settings.heading_color }}">
+    <h1 class="h1">
       {{ metaobject.company_name | default: 'Participant' }}
     </h1>
   </header>
 
-  <div class="profile-grid{% if section.settings.compact %} profile-grid--compact{% endif %}">
-    {% for block in section.blocks %}
-      {% case block.type %}
-        {% when 'about' %}
-          {% if metaobject.company_about %}
-            <section id="about" {{ block.shopify_attributes }}>
-              {% if block.settings.title != blank %}<h2 class="h3">{{ block.settings.title }}</h2>{% endif %}
-              <div class="rte profile-text">{{ metaobject.company_about }}</div>
-            </section>
-          {% endif %}
+  <div class="grid">
+    <div class="grid__item">
+      {% if metaobject.company_about %}
+        <h2 class="h3">About the Company</h2>
+        <div class="rte">{{ metaobject.company_about }}</div>
+      {% endif %}
 
-        {% when 'company_description' %}
-          {% if metaobject.company_description %}
-            <section id="company-description" {{ block.shopify_attributes }}>
-              {% if block.settings.title != blank %}<h2 class="h3">{{ block.settings.title }}</h2>{% endif %}
-              <div class="rte profile-text">{{ metaobject.company_description }}</div>
-            </section>
-          {% endif %}
+      {% if metaobject.company_description %}
+        <h2 class="h3">Company Description</h2>
+        <div class="rte">{{ metaobject.company_description }}</div>
+      {% endif %}
 
-        {% when 'profile_description' %}
-          {% if metaobject.profile_description %}
-            <section id="profile-description" {{ block.shopify_attributes }}>
-              {% if block.settings.title != blank %}<h2 class="h3">{{ block.settings.title }}</h2>{% endif %}
-              <div class="rte profile-text">{{ metaobject.profile_description }}</div>
-            </section>
-          {% endif %}
+      {% if metaobject.profile_description %}
+        <h2 class="h3">Profile Description</h2>
+        <div class="rte">{{ metaobject.profile_description }}</div>
+      {% endif %}
 
-        {% when 'contact' %}
-          {% if metaobject.company_contact %}
-            <section id="contact" {{ block.shopify_attributes }}>
-              {% if block.settings.title != blank %}<h2 class="h3">{{ block.settings.title }}</h2>{% endif %}
-              <div class="rte profile-text">{{ metaobject.company_contact }}</div>
-            </section>
-          {% endif %}
+      {% if metaobject.company_contact %}
+        <h2 class="h3">Contact Information</h2>
+        <div class="rte">{{ metaobject.company_contact }}</div>
+      {% endif %}
 
-        {% when 'document' %}
-          {% if metaobject.profile_document %}
-            {% assign doc = metaobject.profile_document %}
-            <section id="profile-document" {{ block.shopify_attributes }}>
-              {% if block.settings.title != blank %}<h2 class="h3">{{ block.settings.title }}</h2>{% endif %}
-              <p>
-                <a href="{{ doc.url }}" download>
-                  {{ block.settings.link_label | default: doc.filename | default: 'Download profile document' }}
-                </a>
-              </p>
-            </section>
-          {% endif %}
-
-        {% when 'custom_richtext' %}
-          {% if block.settings.content != blank %}
-            <section id="custom-{{ block.id }}" {{ block.shopify_attributes }}>
-              {% if block.settings.title != blank %}<h2 class="h3">{{ block.settings.title }}</h2>{% endif %}
-              <div class="rte profile-text">{{ block.settings.content }}</div>
-            </section>
-          {% endif %}
-      {% endcase %}
-    {% endfor %}
+      {% if metaobject.profile_document %}
+        {% assign doc = metaobject.profile_document %}
+        <div class="profile-doc">
+          <a href="{{ doc.url }}" download>
+            {{ doc.filename | default: 'Download profile document' }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
   </div>
 </section>
-
-<style>
-  #participant-profile .h3 { color: {{ section.settings.heading_color }}; }
-  #participant-profile .profile-text,
-  #participant-profile p, #participant-profile li { color: {{ section.settings.text_color }}; }
-
-  #participant-profile .profile-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  @media (min-width: 992px) {
-    #participant-profile .profile-grid {
-      grid-template-columns: {% if section.settings.two_col %}1fr 1fr{% else %}1fr{% endif %};
-    }
-  }
-  #participant-profile .section-header { margin-bottom: 1.25rem; }
-  #participant-profile .profile-grid--compact { gap: 1rem; }
-</style>
-
-{% else %}
-  {%- comment -%} Guard: hide if not on metaobject/participant. {%- endcomment -%}
-{% endif %}
 
 {% schema %}
 {
   "name": "Participant Profile",
-  "enabled_on": {
-    "templates": ["metaobject"]   // restrict addability to metaobject templates in the editor
-  },
   "settings": [
-    { "type": "color", "id": "heading_color", "label": "Headings color", "default": "#111111" },
-    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#333333" },
-    { "type": "checkbox", "id": "two_col", "label": "Two-column layout on desktop", "default": true },
-    { "type": "checkbox", "id": "compact", "label": "Compact vertical spacing", "default": false }
-  ],
-  "blocks": [
     {
-      "type": "about",
-      "name": "About the Company",
-      "limit": 1,
-      "settings": [{ "type": "text", "id": "title", "label": "Heading", "default": "About the Company" }]
+      "type": "header",
+      "content": "Style (optional)"
     },
     {
-      "type": "company_description",
-      "name": "Company Description",
-      "limit": 1,
-      "settings": [{ "type": "text", "id": "title", "label": "Heading", "default": "Company Description" }]
+      "type": "color",
+      "id": "heading_color",
+      "label": "Headings color",
+      "default": "#111111"
     },
     {
-      "type": "profile_description",
-      "name": "Profile Description",
-      "limit": 1,
-      "settings": [{ "type": "text", "id": "title", "label": "Heading", "default": "Profile Description" }]
-    },
-    {
-      "type": "contact",
-      "name": "Contact Information",
-      "limit": 1,
-      "settings": [{ "type": "text", "id": "title", "label": "Heading", "default": "Contact Information" }]
-    },
-    {
-      "type": "document",
-      "name": "Profile Document",
-      "limit": 1,
-      "settings": [
-        { "type": "text", "id": "title", "label": "Heading", "default": "Profile Document" },
-        { "type": "text", "id": "link_label", "label": "Download link label", "default": "Download profile document" }
-      ]
-    },
-    {
-        "type": "custom_richtext",
-        "name": "Custom Rich Text",
-        "limit": 8,
-        "settings": [
-            { "type": "text", "id": "title", "label": "Heading", "default": "Custom section" },
-            { "type": "richtext", "id": "content", "label": "Content", "default": "<p></p>" }
-        ]
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text color",
+      "default": "#333333"
     }
   ],
   "presets": [
-    {
-      "name": "Participant Profile",
-      "blocks": [
-        { "type": "about" },
-        { "type": "company_description" },
-        { "type": "profile_description" },
-        { "type": "contact" },
-        { "type": "document" }
-      ]
-    }
+    { "name": "Participant Profile" }
   ]
 }
 {% endschema %}
+
+<style>
+  #participant-profile .h3 { color: {{ section.settings.heading_color }}; }
+  #participant-profile .rte, #participant-profile p, #participant-profile li { color: {{ section.settings.text_color }}; }
+</style>
