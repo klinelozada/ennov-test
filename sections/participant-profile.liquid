@@ -14,11 +14,42 @@ Metaobject fields available:
 {% endcomment %}
 
 <section class="page-width" id="participant-profile">
-  {% if section.settings.show_title %}
-    <header class="section-header">
-      <h1 class="h1">{{ metaobject.company_name | default: 'Participant' }}</h1>
-    </header>
-  {% endif %}
+
+  <header class="section-header participant-header">
+    {%- comment -%} Logo (metaobject: participants.company_logo) {%- endcomment -%}
+    {% if metaobject.company_logo %}
+      <div class="participant-logo">
+        <img
+          src="{{ metaobject.company_logo | image_url: width: section.settings.logo_max_width | default: 320 }}"
+          alt="{{ metaobject.company_name | default: 'Participant' | escape }}"
+          width="{{ section.settings.logo_max_width }}"
+          loading="lazy"
+        >
+      </div>
+    {% endif %}
+
+    {%- comment -%} Breadcrumbs {%- endcomment -%}
+    {% if section.settings.show_breadcrumbs %}
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        {% assign crumb_label = section.settings.breadcrumb_label | default: 'Circle of Care' %}
+        {% if section.settings.breadcrumb_url != blank %}
+          <a href="{{ section.settings.breadcrumb_url }}">{{ crumb_label }}</a>
+        {% else %}
+          <span>{{ crumb_label }}</span>
+        {% endif %}
+        <span class="breadcrumbs__sep" aria-hidden="true">›</span>
+        <span class="breadcrumbs__current">
+          {{ metaobject.company_name | default: 'Participant' }}
+        </span>
+      </nav>
+    {% endif %}
+
+    {% if section.settings.show_title %}
+        <header class="section-header">
+        <h1 class="h1">{{ metaobject.company_name | default: 'Participant' }}</h1>
+        </header>
+    {% endif %}
+  </header>
 
   <div class="profile-blocks">
     {% for block in section.blocks %}
@@ -184,3 +215,5 @@ Metaobject fields available:
   #participant-profile .profile-block + .profile-block { margin-top: 2rem; }
   #participant-profile .profile-divider { margin: 1.5rem 0; }
 </style>
+
+participants.company_logo
