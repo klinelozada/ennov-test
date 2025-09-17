@@ -240,8 +240,36 @@ Metaobject fields available:
 {% endschema %}
 
 <style>
-  #participant-profile .profile-block + .profile-block { margin-top: 2rem; }
-  #participant-profile .profile-divider { margin: 1.5rem 0; }
+    #participant-profile .profile-block + .profile-block {
+        margin-top: 2rem;
+    }
+    #participant-profile .profile-divider {
+        margin: 1.5rem 0;
+    }
+    #participant-profile .participant-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    #participant-profile .participant-logo img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    #participant-profile .breadcrumbs {
+        font-size: 0.9rem;
+        opacity: 0.85;
+    }
+    #participant-profile .breadcrumbs a {
+        text-decoration: none;
+    }
+    #participant-profile .breadcrumbs__sep {
+        margin: 0 0.4rem;
+    }
+    #participant-profile .participant-title {
+        margin: 0.25rem 0 0;
+    }
 </style>
 
 participants.company_logo
