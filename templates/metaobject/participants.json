@@ -39,25 +39,6 @@
             "show_divider": false
           }
         },
-        "contact_KHk8JT": {
-          "type": "contact",
-          "settings": {
-            "show_heading": false,
-            "heading": "Contact Information",
-            "heading_tag": "h2",
-            "show_divider": false
-          }
-        },
-        "document_GM7LgA": {
-          "type": "document",
-          "settings": {
-            "show_heading": false,
-            "heading": "Profile Document",
-            "heading_tag": "h2",
-            "link_label": "Download profile document",
-            "show_divider": false
-          }
-        },
         "document_3tb3jt": {
           "type": "document",
           "settings": {
@@ -67,15 +48,23 @@
             "link_label": "Homesteaders Life Company Profile 2025",
             "show_divider": false
           }
+        },
+        "contact_KHk8JT": {
+          "type": "contact",
+          "settings": {
+            "show_heading": false,
+            "heading": "Contact Information",
+            "heading_tag": "h2",
+            "show_divider": false
+          }
         }
       },
       "block_order": [
         "about_Yg6BLY",
         "company_description_T9nymr",
         "profile_description_LLVgAa",
-        "contact_KHk8JT",
-        "document_GM7LgA",
-        "document_3tb3jt"
+        "document_3tb3jt",
+        "contact_KHk8JT"
       ],
       "name": "Participant Profile",
       "settings": {
