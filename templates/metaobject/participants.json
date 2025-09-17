@@ -11,10 +11,60 @@
   "sections": {
     "participant_profile_8MnUi3": {
       "type": "participant-profile",
+      "blocks": {
+        "about_Yg6BLY": {
+          "type": "about",
+          "settings": {
+            "title": "About the Company"
+          }
+        },
+        "profile_description_LLVgAa": {
+          "type": "profile_description",
+          "settings": {
+            "title": "Profile Description"
+          }
+        },
+        "company_description_T9nymr": {
+          "type": "company_description",
+          "settings": {
+            "title": "Company Description"
+          }
+        },
+        "contact_KHk8JT": {
+          "type": "contact",
+          "settings": {
+            "title": "Contact Information"
+          }
+        },
+        "document_GM7LgA": {
+          "type": "document",
+          "settings": {
+            "title": "Profile Document",
+            "link_label": "Download profile document"
+          }
+        },
+        "custom_richtext_BdBmpj": {
+          "type": "custom_richtext",
+          "settings": {
+            "title": "Custom section",
+            "content": "<p></p>"
+          }
+        }
+      },
+      "block_order": [
+        "about_Yg6BLY",
+        "profile_description_LLVgAa",
+        "company_description_T9nymr",
+        "contact_KHk8JT",
+        "document_GM7LgA",
+        "custom_richtext_BdBmpj"
+      ],
       "name": "Participant Profile",
       "settings": {
         "heading_color": "#111111",
-        "text_color": "#333333"
+        "text_color": "#333333",
+        "two_col": true,
+        "compact": false
       }
     }
   },
