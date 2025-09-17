@@ -12,10 +12,9 @@ Metaobject fields available:
   - profile_document (file)
   - company_contact (rich text or text)
 {% endcomment %}
+ 
+<section class="" id="participant-profile-logo">
 
-<section class="page-width" id="participant-profile">
-
-  <header class="section-header participant-header">
     {%- comment -%} Logo (metaobject: participants.company_logo) {%- endcomment -%}
     {% if metaobject.company_logo %}
       <div class="participant-logo">
@@ -27,6 +26,12 @@ Metaobject fields available:
         >
       </div>
     {% endif %}
+
+</section>
+
+<section class="page-width" id="participant-profile">
+
+  <header class="section-header participant-header">
 
     {%- comment -%} Breadcrumbs {%- endcomment -%}
     {% if section.settings.show_breadcrumbs %}
@@ -253,7 +258,7 @@ Metaobject fields available:
         margin-bottom: 1rem;
     }
     #participant-profile .participant-logo img {
-        max-width: 100%;
+        max-width: 100%;   
         height: auto;
         display: block;
     }
