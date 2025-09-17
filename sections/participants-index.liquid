@@ -1,0 +1,21 @@
+<section class="page-width">
+  <h1 class="h1">Participants</h1>
+
+  {% paginate shop.metaobjects['participants'].values by 25 %}
+    <ul class="grid grid--4-col">
+      {% for entry in shop.metaobjects['participants'].values %}
+        <li>
+          <a href="{{ entry.system.url }}">
+            {% if entry.photo %}
+              <img src="{{ entry.photo | image_url: width: 400 }}" alt="{{ entry.name | escape }}">
+            {% endif %}
+            <div class="h4">{{ entry.name }}</div>
+            {% if entry.role %}<div class="subtitle">{{ entry.role }}</div>{% endif %}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {{ paginate | default_pagination }}
+  {% endpaginate %}
+</section>
