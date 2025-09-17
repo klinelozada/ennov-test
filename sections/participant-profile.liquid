@@ -1,43 +1,186 @@
+{% comment %}
+Participant Profile (Blocks)
+- Shows pieces of the Participant metaobject as configurable blocks.
+- Reorder/enable blocks in the Theme Editor.
+- Uses metafield_tag to render rich text JSON.
+
+Metaobject fields available:
+  - company_name (text)
+  - company_about (rich text)
+  - company_description (rich text)
+  - profile_description (rich text)
+  - profile_document (file)
+  - company_contact (rich text or text)
+{% endcomment %}
+
 <section class="page-width" id="participant-profile">
-  <header class="section-header">
-    <h1 class="h1">
-      {{ metaobject.company_name | default: 'Participant' }}
-    </h1>
-  </header>
+  {% if section.settings.show_title %}
+    <header class="section-header">
+      <h1 class="h1">{{ metaobject.company_name | default: 'Participant' }}</h1>
+    </header>
+  {% endif %}
 
-  <div class="grid">
-    <div class="grid__item">
+  <div class="profile-blocks">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'about' %}
+          {% if metaobject.company_about %}
+            <div class="profile-block" {{ block.shopify_attributes }}>
+              {% if block.settings.show_heading %}
+                <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'About the Company' }}</{{ block.settings.heading_tag }}>
+              {% endif %}
+              <div class="rte">{{ metaobject.company_about | metafield_tag }}</div>
+            </div>
+          {% endif %}
 
-      {% if metaobject.company_about %}
-        <h2 class="h3">About the Company</h2>
-        <div class="rte">{{ metaobject.company_about | metafield_tag }}</div>
+        {% when 'company_description' %}
+          {% if metaobject.company_description %}
+            <div class="profile-block" {{ block.shopify_attributes }}>
+              {% if block.settings.show_heading %}
+                <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'Company Description' }}</{{ block.settings.heading_tag }}>
+              {% endif %}
+              <div class="rte">{{ metaobject.company_description | metafield_tag }}</div>
+            </div>
+          {% endif %}
+
+        {% when 'profile_description' %}
+          {% if metaobject.profile_description %}
+            <div class="profile-block" {{ block.shopify_attributes }}>
+              {% if block.settings.show_heading %}
+                <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'Profile Description' }}</{{ block.settings.heading_tag }}>
+              {% endif %}
+              <div class="rte">{{ metaobject.profile_description | metafield_tag }}</div>
+            </div>
+          {% endif %}
+
+        {% when 'contact' %}
+          {% if metaobject.company_contact %}
+            <div class="profile-block" {{ block.shopify_attributes }}>
+              {% if block.settings.show_heading %}
+                <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'Contact Information' }}</{{ block.settings.heading_tag }}>
+              {% endif %}
+              {%- comment -%}
+              If contact is plain text, switch to: {{ metaobject.company_contact | escape | newline_to_br }}
+              {%- endcomment -%}
+              <div class="rte">{{ metaobject.company_contact | metafield_tag }}</div>
+            </div>
+          {% endif %}
+
+        {% when 'document' %}
+          {% assign doc = metaobject.profile_document %}
+          {% if doc and doc != blank %}
+            {% assign doc_url = doc.url | default: doc.preview_image.src %}
+            <div class="profile-block" {{ block.shopify_attributes }}>
+              {% if block.settings.show_heading %}
+                <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'Profile Document' }}</{{ block.settings.heading_tag }}>
+              {% endif %}
+              <p>
+                <a href="{{ doc_url }}" download target="_blank" rel="noopener">
+                  {{ block.settings.link_label | default: doc.filename | default: 'Download profile document' }}
+                </a>
+              </p>
+            </div>
+          {% endif %}
+      {% endcase %}
+
+      {% if block.settings.show_divider %}
+        <hr class="profile-divider">
       {% endif %}
-
-      {% if metaobject.company_description %}
-        <h2 class="h3">Company Description</h2>
-        <div class="rte">{{ metaobject.company_description | metafield_tag }}</div>
-      {% endif %}
-
-      {% if metaobject.profile_description %}
-        <h2 class="h3">Profile Description</h2>
-        <div class="rte">{{ metaobject.profile_description | metafield_tag }}</div>
-      {% endif %}
-
-      {% if metaobject.company_contact %}
-        <h2 class="h3">Contact Information</h2>
-        <div class="rte">{{ metaobject.company_contact | metafield_tag }}</div>
-      {% endif %}
-
-      {% assign doc = metaobject.profile_document %}
-      {% if doc and doc != blank %}
-        {% assign doc_url = doc.url | default: doc.preview_image.src %}
-        <div class="profile-doc">
-          <a href="{{ doc_url }}" download target="_blank" rel="noopener">
-            {{ doc.filename | default: 'Download profile document' }}
-          </a>
-        </div>
-      {% endif %}
-
-    </div>
+    {% endfor %}
   </div>
 </section>
+
+{% schema %}
+{
+  "name": "Participant Profile",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show company name as title",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "about",
+      "name": "About block",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_heading", "label": "Show heading", "default": true },
+        { "type": "text", "id": "heading", "label": "Heading text", "default": "About the Company" },
+        { "type": "select", "id": "heading_tag", "label": "Heading tag", "default": "h2", "options": [
+          { "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" }, { "value": "h4", "label": "H4" }
+        ]},
+        { "type": "checkbox", "id": "show_divider", "label": "Show divider below", "default": false }
+      ]
+    },
+    {
+      "type": "company_description",
+      "name": "Company description block",
+      "settings": [
+        { "type": "checkbox", "id": "show_heading", "label": "Show heading", "default": true },
+        { "type": "text", "id": "heading", "label": "Heading text", "default": "Company Description" },
+        { "type": "select", "id": "heading_tag", "label": "Heading tag", "default": "h2", "options": [
+          { "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" }, { "value": "h4", "label": "H4" }
+        ]},
+        { "type": "checkbox", "id": "show_divider", "label": "Show divider below", "default": false }
+      ]
+    },
+    {
+      "type": "profile_description",
+      "name": "Profile description block",
+      "settings": [
+        { "type": "checkbox", "id": "show_heading", "label": "Show heading", "default": true },
+        { "type": "text", "id": "heading", "label": "Heading text", "default": "Profile Description" },
+        { "type": "select", "id": "heading_tag", "label": "Heading tag", "default": "h2", "options": [
+          { "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" }, { "value": "h4", "label": "H4" }
+        ]},
+        { "type": "checkbox", "id": "show_divider", "label": "Show divider below", "default": false }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact info block",
+      "settings": [
+        { "type": "checkbox", "id": "show_heading", "label": "Show heading", "default": true },
+        { "type": "text", "id": "heading", "label": "Heading text", "default": "Contact Information" },
+        { "type": "select", "id": "heading_tag", "label": "Heading tag", "default": "h2", "options": [
+          { "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" }, { "value": "h4", "label": "H4" }
+        ]},
+        { "type": "checkbox", "id": "show_divider", "label": "Show divider below", "default": false }
+      ]
+    },
+    {
+      "type": "document",
+      "name": "Profile document block",
+      "settings": [
+        { "type": "checkbox", "id": "show_heading", "label": "Show heading", "default": true },
+        { "type": "text", "id": "heading", "label": "Heading text", "default": "Profile Document" },
+        { "type": "select", "id": "heading_tag", "label": "Heading tag", "default": "h2", "options": [
+          { "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" }, { "value": "h4", "label": "H4" }
+        ]},
+        { "type": "text", "id": "link_label", "label": "Link label (optional)", "default": "Download profile document" },
+        { "type": "checkbox", "id": "show_divider", "label": "Show divider below", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Participant Profile",
+      "blocks": [
+        { "type": "about" },
+        { "type": "company_description" },
+        { "type": "profile_description" },
+        { "type": "contact" },
+        { "type": "document" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  #participant-profile .profile-block + .profile-block { margin-top: 2rem; }
+  #participant-profile .profile-divider { margin: 1.5rem 0; }
+</style>
