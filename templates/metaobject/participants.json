@@ -15,13 +15,13 @@
         "about_Yg6BLY": {
           "type": "about",
           "settings": {
-            "title": "About the Company"
+            "title": "About the Company{{ metaobject.company_name.value }}"
           }
         },
         "profile_description_LLVgAa": {
           "type": "profile_description",
           "settings": {
-            "title": "Profile Description"
+            "title": "Profile Description{{ metaobject.company_name.value }}"
           }
         },
         "company_description_T9nymr": {
@@ -47,7 +47,7 @@
           "type": "custom_richtext",
           "settings": {
             "title": "Custom section",
-            "content": "<p></p>"
+            "content": ""
           }
         }
       },
