@@ -126,10 +126,38 @@ Metaobject fields available:
   "name": "Participant Profile",
   "settings": [
     {
-      "type": "checkbox",
-      "id": "show_title",
-      "label": "Show company name as title",
-      "default": true
+        "type": "checkbox",
+        "id": "show_title",
+        "label": "Show company name as title",
+        "default": true
+    },
+    {
+        "type": "header",
+        "content": "Header options"
+    },
+    {
+        "type": "range",
+        "id": "logo_max_width",
+        "label": "Logo max width (px)",
+        "min": 80, "max": 600, "step": 10,
+        "default": 220
+    },
+    {
+        "type": "checkbox",
+        "id": "show_breadcrumbs",
+        "label": "Show breadcrumbs",
+        "default": true
+    },
+    {
+        "type": "text",
+        "id": "breadcrumb_label",
+        "label": "Breadcrumb root label",
+        "default": "Circle of Care"
+    },
+    {
+        "type": "url",
+        "id": "breadcrumb_url",
+        "label": "Breadcrumb root link (e.g., /pages/participants)"
     }
   ],
   "blocks": [
