@@ -15,17 +15,8 @@
         "about_Yg6BLY": {
           "type": "about",
           "settings": {
-            "show_heading": true,
+            "show_heading": false,
             "heading": "",
-            "heading_tag": "h2",
-            "show_divider": false
-          }
-        },
-        "profile_description_LLVgAa": {
-          "type": "profile_description",
-          "settings": {
-            "show_heading": true,
-            "heading": "Profile Description",
             "heading_tag": "h2",
             "show_divider": false
           }
@@ -33,8 +24,17 @@
         "company_description_T9nymr": {
           "type": "company_description",
           "settings": {
-            "show_heading": true,
+            "show_heading": false,
             "heading": "Company Description",
+            "heading_tag": "h2",
+            "show_divider": false
+          }
+        },
+        "profile_description_LLVgAa": {
+          "type": "profile_description",
+          "settings": {
+            "show_heading": false,
+            "heading": "Profile Description",
             "heading_tag": "h2",
             "show_divider": false
           }
@@ -42,7 +42,7 @@
         "contact_KHk8JT": {
           "type": "contact",
           "settings": {
-            "show_heading": true,
+            "show_heading": false,
             "heading": "Contact Information",
             "heading_tag": "h2",
             "show_divider": false
@@ -51,20 +51,31 @@
         "document_GM7LgA": {
           "type": "document",
           "settings": {
-            "show_heading": true,
+            "show_heading": false,
             "heading": "Profile Document",
             "heading_tag": "h2",
             "link_label": "Download profile document",
+            "show_divider": false
+          }
+        },
+        "document_3tb3jt": {
+          "type": "document",
+          "settings": {
+            "show_heading": false,
+            "heading": "Profile Document",
+            "heading_tag": "h2",
+            "link_label": "Homesteaders Life Company Profile 2025",
             "show_divider": false
           }
         }
       },
       "block_order": [
         "about_Yg6BLY",
-        "profile_description_LLVgAa",
         "company_description_T9nymr",
+        "profile_description_LLVgAa",
         "contact_KHk8JT",
-        "document_GM7LgA"
+        "document_GM7LgA",
+        "document_3tb3jt"
       ],
       "name": "Participant Profile",
       "settings": {
