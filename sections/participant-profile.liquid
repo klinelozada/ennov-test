@@ -1,17 +1,3 @@
-{% comment %}
-Renders a Participant metaobject entry.
-
-Your metaobject fields:
-- company_name            (text)
-- company_about           (rich text / long text)
-- company_description     (rich text / long text)
-- profile_description     (rich text / long text)
-- profile_document        (file)
-- company_contact         (text or rich text)
-
-The current entry is available as `metaobject`.
-{% endcomment %}
-
 <section class="page-width" id="participant-profile">
   <header class="section-header">
     <h1 class="h1">
@@ -21,66 +7,37 @@ The current entry is available as `metaobject`.
 
   <div class="grid">
     <div class="grid__item">
+
       {% if metaobject.company_about %}
         <h2 class="h3">About the Company</h2>
-        <div class="rte">{{ metaobject.company_about }}</div>
+        <div class="rte">{{ metaobject.company_about | metafield_tag }}</div>
       {% endif %}
 
       {% if metaobject.company_description %}
         <h2 class="h3">Company Description</h2>
-        <div class="rte">{{ metaobject.company_description }}</div>
+        <div class="rte">{{ metaobject.company_description | metafield_tag }}</div>
       {% endif %}
 
       {% if metaobject.profile_description %}
         <h2 class="h3">Profile Description</h2>
-        <div class="rte">{{ metaobject.profile_description }}</div>
+        <div class="rte">{{ metaobject.profile_description | metafield_tag }}</div>
       {% endif %}
 
       {% if metaobject.company_contact %}
         <h2 class="h3">Contact Information</h2>
-        <div class="rte">{{ metaobject.company_contact }}</div>
+        <div class="rte">{{ metaobject.company_contact | metafield_tag }}</div>
       {% endif %}
 
-      {% if metaobject.profile_document %}
-        {% assign doc = metaobject.profile_document %}
+      {% assign doc = metaobject.profile_document %}
+      {% if doc and doc != blank %}
+        {% assign doc_url = doc.url | default: doc.preview_image.src %}
         <div class="profile-doc">
-          <a href="{{ doc.url }}" download>
+          <a href="{{ doc_url }}" download target="_blank" rel="noopener">
             {{ doc.filename | default: 'Download profile document' }}
           </a>
         </div>
       {% endif %}
+
     </div>
   </div>
 </section>
-
-{% schema %}
-{
-  "name": "Participant Profile",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Style (optional)"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Headings color",
-      "default": "#111111"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Body text color",
-      "default": "#333333"
-    }
-  ],
-  "presets": [
-    { "name": "Participant Profile" }
-  ]
-}
-{% endschema %}
-
-<style>
-  #participant-profile .h3 { color: {{ section.settings.heading_color }}; }
-  #participant-profile .rte, #participant-profile p, #participant-profile li { color: {{ section.settings.text_color }}; }
-</style>
