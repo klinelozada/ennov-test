@@ -15,39 +15,47 @@
         "about_Yg6BLY": {
           "type": "about",
           "settings": {
-            "title": "About the Company{{ metaobject.company_name.value }}"
+            "show_heading": true,
+            "heading": "",
+            "heading_tag": "h2",
+            "show_divider": false
           }
         },
         "profile_description_LLVgAa": {
           "type": "profile_description",
           "settings": {
-            "title": "Profile Description{{ metaobject.company_name.value }}"
+            "show_heading": true,
+            "heading": "Profile Description",
+            "heading_tag": "h2",
+            "show_divider": false
           }
         },
         "company_description_T9nymr": {
           "type": "company_description",
           "settings": {
-            "title": "Company Description"
+            "show_heading": true,
+            "heading": "Company Description",
+            "heading_tag": "h2",
+            "show_divider": false
           }
         },
         "contact_KHk8JT": {
           "type": "contact",
           "settings": {
-            "title": "Contact Information"
+            "show_heading": true,
+            "heading": "Contact Information",
+            "heading_tag": "h2",
+            "show_divider": false
           }
         },
         "document_GM7LgA": {
           "type": "document",
           "settings": {
-            "title": "Profile Document",
-            "link_label": "Download profile document"
-          }
-        },
-        "custom_richtext_BdBmpj": {
-          "type": "custom_richtext",
-          "settings": {
-            "title": "Custom section",
-            "content": ""
+            "show_heading": true,
+            "heading": "Profile Document",
+            "heading_tag": "h2",
+            "link_label": "Download profile document",
+            "show_divider": false
           }
         }
       },
@@ -56,15 +64,11 @@
         "profile_description_LLVgAa",
         "company_description_T9nymr",
         "contact_KHk8JT",
-        "document_GM7LgA",
-        "custom_richtext_BdBmpj"
+        "document_GM7LgA"
       ],
       "name": "Participant Profile",
       "settings": {
-        "heading_color": "#111111",
-        "text_color": "#333333",
-        "two_col": true,
-        "compact": false
+        "show_title": true
       }
     }
   },
