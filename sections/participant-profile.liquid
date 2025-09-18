@@ -61,7 +61,7 @@ Metaobject fields available:
       {% case block.type %}
         {% when 'about' %}
           {% if metaobject.company_about %}
-            <div class="profile-block" {{ block.shopify_attributes }}>
+            <div class="profile-block company_about" {{ block.shopify_attributes }}>
               {% if block.settings.show_heading %}
                 <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'About the Company' }}</{{ block.settings.heading_tag }}>
               {% endif %}
@@ -71,7 +71,7 @@ Metaobject fields available:
 
         {% when 'company_description' %}
           {% if metaobject.company_description %}
-            <div class="profile-block" {{ block.shopify_attributes }}>
+            <div class="profile-block company_description" {{ block.shopify_attributes }}>
               {% if block.settings.show_heading %}
                 <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'Company Description' }}</{{ block.settings.heading_tag }}>
               {% endif %}
@@ -81,7 +81,7 @@ Metaobject fields available:
 
         {% when 'profile_description' %}
           {% if metaobject.profile_description %}
-            <div class="profile-block" {{ block.shopify_attributes }}>
+            <div class="profile-block profile_description" {{ block.shopify_attributes }}>
               {% if block.settings.show_heading %}
                 <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'Profile Description' }}</{{ block.settings.heading_tag }}>
               {% endif %}
@@ -91,7 +91,7 @@ Metaobject fields available:
 
         {% when 'contact' %}
           {% if metaobject.company_contact %}
-            <div class="profile-block" {{ block.shopify_attributes }}>
+            <div class="profile-block company_contact" {{ block.shopify_attributes }}>
               {% if block.settings.show_heading %}
                 <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'Contact Information' }}</{{ block.settings.heading_tag }}>
               {% endif %}
@@ -106,7 +106,7 @@ Metaobject fields available:
           {% assign doc = metaobject.profile_document %}
           {% if doc and doc != blank %}
             {% assign doc_url = doc.url | default: doc.preview_image.src %}
-            <div class="profile-block" {{ block.shopify_attributes }}>
+            <div class="profile-block profile_document" {{ block.shopify_attributes }}>
               {% if block.settings.show_heading %}
                 <{{ block.settings.heading_tag }} class="h3">{{ block.settings.heading | default: 'Profile Document' }}</{{ block.settings.heading_tag }}>
               {% endif %}
@@ -169,9 +169,9 @@ Metaobject fields available:
     #participant-profile .participant-title {
         margin: 0.25rem 0 0;
     }
-    #participant-profile header h1 {
+    #participant-profile header h1 { 
         font-size:3rem;
-        font-weight:500;
+        font-weight:800;
     }
     .participant-profile-logo {
         background:#63308A;
