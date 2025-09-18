@@ -126,6 +126,64 @@ Metaobject fields available:
   </div>
 </section>
 
+<style>
+    #participant-profile {
+        width:850px;
+        max-width:100%;
+        padding:4rem 0;
+    }
+    #participant-profile .profile-block + .profile-block {
+        margin-top: 2rem;
+    }
+    #participant-profile .profile-divider {
+        margin: 1.5rem 0;
+    }
+    #participant-profile .participant-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    #participant-profile .participant-header {
+        
+    }
+    #participant-profile .participant-logo img {
+        max-width: 100%;   
+        height: auto;
+        display: block;
+    }
+    #participant-profile .breadcrumbs {
+        font-size: 14px;
+        opacity: 0.85;
+    }
+    #participant-profile .breadcrumbs a {
+        text-decoration: none;
+    }
+    #participant-profile .breadcrumbs__current {
+        color:#63308A;
+        font-weight:800;
+    }
+    #participant-profile .breadcrumbs__sep {
+        margin: 0 0.4rem;
+    }
+    #participant-profile .participant-title {
+        margin: 0.25rem 0 0;
+    }
+    .participant-profile-logo {
+        background:#63308A;
+        height:280px;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius:180px 0 0 0;
+    }
+    .participant-profile-logo img {
+        width:320px;
+        height:auto;
+    }
+</style>
+
 {% schema %}
 {
   "name": "Participant Profile",
@@ -243,58 +301,3 @@ Metaobject fields available:
   ]
 }
 {% endschema %}
-
-<style>
-    #participant-profile {
-        width:850px;
-        max-width:100%;
-        padding:4rem 0;
-    }
-    #participant-profile .profile-block + .profile-block {
-        margin-top: 2rem;
-    }
-    #participant-profile .profile-divider {
-        margin: 1.5rem 0;
-    }
-    #participant-profile .participant-header {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }
-    #participant-profile .participant-logo img {
-        max-width: 100%;   
-        height: auto;
-        display: block;
-    }
-    #participant-profile .breadcrumbs {
-        font-size: 14px;
-        opacity: 0.85;
-    }
-    #participant-profile .breadcrumbs a {
-        text-decoration: none;
-    }
-    #participant-profile .breadcrumbs__current {
-        color:#63308A;
-        font-weight:800;
-    }
-    #participant-profile .breadcrumbs__sep {
-        margin: 0 0.4rem;
-    }
-    #participant-profile .participant-title {
-        margin: 0.25rem 0 0;
-    }
-    .participant-profile-logo {
-        background:#63308A;
-        height:280px;
-        display:flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border-radius:180px 0 0 0;
-    }
-    .participant-profile-logo img {
-        width:320px;
-        height:auto;
-    }
-</style>
