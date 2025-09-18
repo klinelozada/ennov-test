@@ -1,44 +1,54 @@
-{% comment %}
-  Info Box Section for Shopify
-  Save this file as: sections/info-box.liquid
-{% endcomment %}
+{%- comment -%}
+  Section: Info Box
+  - Configurable header text with color control
+  - Configurable subtitle with color control  
+  - Optional button with label, URL, and color control
+  - Text alignment options (left, center, right)
+  - Background color and border radius customization
+  - Fully responsive design
 
-<div class="info-box-section">
-  <div class="info-box-container">
-    {% if section.settings.header != blank %}
-      <h2 class="info-box-header">{{ section.settings.header }}</h2>
-    {% endif %}
+  Placement: Any template
+{%- endcomment -%}
+
+<div id="info-box-{{ section.id }}" class="info-box-section">
+  <div class="info-box-section__container">
     
-    {% if section.settings.subtitle != blank %}
-      <div class="info-box-subtitle">{{ section.settings.subtitle }}</div>
-    {% endif %}
+    {%- if section.settings.header != blank -%}
+      <h2 class="info-box-section__header">{{ section.settings.header }}</h2>
+    {%- endif -%}
     
-    {% if section.settings.button_label != blank and section.settings.button_url != blank %}
-      <div class="info-box-button-wrapper">
-        <a href="{{ section.settings.button_url }}" class="info-box-button">
+    {%- if section.settings.subtitle != blank -%}
+      <div class="info-box-section__subtitle">{{ section.settings.subtitle }}</div>
+    {%- endif -%}
+    
+    {%- if section.settings.button_label != blank and section.settings.button_url != blank -%}
+      <div class="info-box-section__button-wrapper">
+        <a href="{{ section.settings.button_url }}" class="info-box-section__button">
           {{ section.settings.button_label }}
         </a>
       </div>
-    {% endif %}
+    {%- endif -%}
+
   </div>
 </div>
 
 <style>
-  .info-box-section {
+  #info-box-{{ section.id }} {
+    width: 100%;
     padding: 40px 20px;
     background-color: {{ section.settings.background_color | default: '#E7E6F3' }};
   }
   
-  .info-box-container {
+  #info-box-{{ section.id }} .info-box-section__container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 60px 40px;
     background-color: {{ section.settings.background_color | default: '#E7E6F3' }};
     border-radius: {{ section.settings.border_radius | default: '20px 0 20px 0' }};
-    text-align: center;
+    text-align: {{ section.settings.text_alignment | default: 'center' }};
   }
   
-  .info-box-header {
+  .info-box-section__header {
     font-size: 2.5rem;
     font-weight: 700;
     line-height: 1.2;
@@ -46,21 +56,30 @@
     color: {{ section.settings.header_color | default: '#63308A' }};
   }
   
-  .info-box-subtitle {
+  .info-box-section__subtitle {
     font-size: 1.125rem;
     line-height: 1.6;
     margin: 0 0 32px 0;
     color: {{ section.settings.subtitle_color | default: '#140A1C' }};
     max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    {%- case section.settings.text_alignment -%}
+      {%- when 'left' -%}
+        margin-left: 0;
+        margin-right: auto;
+      {%- when 'right' -%}
+        margin-left: auto;
+        margin-right: 0;
+      {%- else -%}
+        margin-left: auto;
+        margin-right: auto;
+    {%- endcase -%}
   }
   
-  .info-box-button-wrapper {
+  .info-box-section__button-wrapper {
     margin-top: 32px;
   }
   
-  .info-box-button {
+  .info-box-section__button {
     display: inline-block;
     padding: 16px 32px;
     background-color: {{ section.settings.button_color | default: '#63308A' }};
@@ -73,7 +92,7 @@
     border: 2px solid {{ section.settings.button_color | default: '#63308A' }};
   }
   
-  .info-box-button:hover {
+  .info-box-section__button:hover {
     background-color: transparent;
     color: {{ section.settings.button_color | default: '#63308A' }};
     transform: translateY(-2px);
@@ -82,35 +101,35 @@
   
   /* Responsive Design */
   @media (max-width: 768px) {
-    .info-box-container {
+    #info-box-{{ section.id }} {
+      padding: 20px 16px;
+    }
+    
+    #info-box-{{ section.id }} .info-box-section__container {
       padding: 40px 24px;
     }
     
-    .info-box-header {
+    .info-box-section__header {
       font-size: 2rem;
     }
     
-    .info-box-subtitle {
+    .info-box-section__subtitle {
       font-size: 1rem;
     }
     
-    .info-box-button {
+    .info-box-section__button {
       padding: 14px 28px;
       font-size: 0.9rem;
     }
   }
   
   @media (max-width: 480px) {
-    .info-box-section {
-      padding: 20px 16px;
-    }
-    
-    .info-box-container {
-      padding: 32px 20px;
-    }
-    
-    .info-box-header {
+    .info-box-section__header {
       font-size: 1.75rem;
+    }
+    
+    #info-box-{{ section.id }} .info-box-section__container {
+      padding: 32px 20px;
     }
   }
 </style>
@@ -118,32 +137,46 @@
 {% schema %}
 {
   "name": "Info Box",
-  "tag": "section",
+  "tag": "section", 
   "class": "section",
   "settings": [
     {
       "type": "text",
       "id": "header",
-      "label": "Header",
+      "label": "Header text",
       "default": "Together, we nurture a community of belonging and care, with Love Always"
     },
     {
       "type": "textarea",
-      "id": "subtitle",
-      "label": "Subtitle",
+      "id": "subtitle", 
+      "label": "Subtitle text",
       "default": "Embrace the journey of life with confidence, knowing that Love Always is here to support you every step of the way. Whether you're planning ahead or navigating through challenges, we are dedicated to providing the guidance and compassion you need."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Button"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Button Label",
+      "label": "Button label",
       "default": "Discover your path"
     },
     {
-      "type": "text",
+      "type": "url", 
       "id": "button_url",
-      "label": "Button URL",
-      "default": "https://google.com"
+      "label": "Button URL"
     },
     {
       "type": "header",
@@ -152,31 +185,31 @@
     {
       "type": "color",
       "id": "header_color",
-      "label": "Header Color",
+      "label": "Header color",
       "default": "#63308A"
     },
     {
-      "type": "color",
+      "type": "color", 
       "id": "subtitle_color",
-      "label": "Subtitle Color",
+      "label": "Subtitle color",
       "default": "#140A1C"
     },
     {
       "type": "color",
-      "id": "button_color",
-      "label": "Button Color",
+      "id": "button_color", 
+      "label": "Button color",
       "default": "#63308A"
     },
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background Color",
+      "label": "Background color",
       "default": "#E7E6F3"
     },
     {
       "type": "text",
       "id": "border_radius",
-      "label": "Border Radius",
+      "label": "Border radius", 
       "default": "20px 0 20px 0",
       "info": "Use CSS border-radius syntax (e.g., '20px 0 20px 0')"
     }
@@ -188,9 +221,9 @@
         "header": "Together, we nurture a community of belonging and care, with Love Always",
         "subtitle": "Embrace the journey of life with confidence, knowing that Love Always is here to support you every step of the way. Whether you're planning ahead or navigating through challenges, we are dedicated to providing the guidance and compassion you need.",
         "button_label": "Discover your path",
-        "button_url": "https://google.com",
+        "text_alignment": "center",
         "header_color": "#63308A",
-        "subtitle_color": "#140A1C",
+        "subtitle_color": "#140A1C", 
         "button_color": "#63308A",
         "background_color": "#E7E6F3",
         "border_radius": "20px 0 20px 0"
