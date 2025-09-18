@@ -36,7 +36,7 @@
             "show_heading": false,
             "heading": "Profile Description",
             "heading_tag": "h2",
-            "show_divider": false
+            "show_divider": true
           }
         },
         "document_3tb3jt": {
