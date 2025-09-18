@@ -68,7 +68,11 @@
       ],
       "name": "Participant Profile",
       "settings": {
-        "show_title": true
+        "show_title": true,
+        "logo_max_width": 220,
+        "show_breadcrumbs": true,
+        "breadcrumb_label": "Circle of Care",
+        "breadcrumb_url": ""
       }
     }
   },
